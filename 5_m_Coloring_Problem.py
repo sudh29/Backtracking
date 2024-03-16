@@ -1,34 +1,26 @@
 #User function Template for python3
-def is_safe(node, graph, color, c):
-    for i in range(len(graph)):
-        if graph[node][i] == 1 and color[i] == c:
-            return False
+
+def valid(node,graph,color,c,graph_len):
+    for i in range(graph_len):
+        if graph[node][i] and color[i] == c: return False
     return True
-
-def graph_coloring_util(graph, m, color, v):
-    if v == len(graph):
-        return True
-    for c in range(1, m + 1):
-        if is_safe(v, graph, color, c):
-            color[v] = c
-            if graph_coloring_util(graph, m, color, v + 1):
-                return True
-            color[v] = 0
+    
+def solve(node, m, color, graph, graph_len):
+    if node==graph_len: return True
+    for c in range(1,m+1):
+        if valid(node,graph,color,c,graph_len):
+            color[node]=c
+            if solve(node+1, m, color, graph, graph_len): return True
+            color[node]=0     
     return False
-
-def graph_coloring(graph, m,V):
-    color = [0] * V
-    if graph_coloring_util(graph, m, color, 0):
-        return 1
-    return 0
-
+    
 #Function to determine if graph can be coloured with at most M colours such
 #that no two adjacent vertices of graph are coloured with same colour.
 def graphColoring(graph, k, V):
-    return graph_coloring(graph,k,V)
+    color = [0] * V
+    if solve(0,k,color,graph,V): return 1
+    return 0
     
-    
-
 
 #{ 
  # Driver Code Starts
